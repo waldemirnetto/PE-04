@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfólio — Designer Criativo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F7F4EF;
+      --warm-white: #FDFCF9;
+      --ink: #1A1714;
+      --ink-light: #5C5752;
+      --accent: #C17F4A;
+      --accent-pale: #E8D5BC;
+      --line: #E2DDD7;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.12s ease, width 0.3s, height 0.3s, opacity 0.3s;
+      opacity: 0.6;
+    }
+    body:hover .cursor { opacity: 1; }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 28px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(253,252,249,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s;
+    }
+    nav.scrolled { border-bottom-color: var(--line); }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); font-style: italic; }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 40px;
+    }
+    nav ul a {
+      text-decoration: none;
+      color: var(--ink-light);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.3s;
+    }
+    nav ul a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    nav ul a:hover { color: var(--ink); }
+    nav ul a:hover::after { width: 100%; }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      padding: 100px 60px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: 60px;
+      position: relative;
+    }
+
+    .hero-line {
+      position: absolute;
+      top: 50%; left: 60px; right: 60px;
+      height: 1px;
+      background: var(--line);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: expand 1.4s ease 0.6s forwards;
+    }
+
+    @keyframes expand { to { transform: scaleX(1); } }
+
+    .hero-left { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(60px, 8vw, 110px);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.35s forwards;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-right {
+      padding-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.55s forwards;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--ink-light);
+      line-height: 1.75;
+      max-width: 380px;
+      margin-bottom: 40px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 4px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .hero-cta:hover { color: var(--accent); border-color: var(--accent); }
+    .hero-cta svg { transition: transform 0.3s; }
+    .hero-cta:hover svg { transform: translateX(6px); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 50px; right: 60px;
+      writing-mode: vertical-rl;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.2s forwards;
+    }
+    .hero-scroll::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 50px;
+      background: var(--ink-light);
+      animation: growLine 1s ease 1.5s both;
+    }
+    @keyframes growLine { from { height: 0; } to { height: 50px; } }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Section base */
+    section { padding: 120px 60px; }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 60px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+
+    /* About */
+    .about { background: var(--cream); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-text {
+      color: var(--ink-light);
+      line-height: 1.85;
+      font-size: 16px;
+      margin-top: 32px;
+    }
+    .about-text p + p { margin-top: 20px; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 32px;
+    }
+    .stat-card {
+      background: var(--warm-white);
+      padding: 36px 28px;
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-top: 8px;
+    }
+
+    /* Work */
+    .work-grid {
+  display: grid;
+  grid-template-columns: 1fr;  /* Alterado de repeat(3, 1fr) */
+  gap: 2px;
+  margin-top: 60px;
+}
+
+    .work-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      background: var(--cream);
+      cursor: none;
+    }
+
+    .work-thumb {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .work-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 100px;
+      font-weight: 300;
+      color: var(--accent-pale);
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      user-select: none;
+    }
+
+    .work-card:hover .work-placeholder,
+    .work-card:hover .work-thumb {
+      transform: scale(1.05);
+    }
+
+    .work-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px;
+      background: linear-gradient(to top, rgba(26,23,20,0.85) 0%, transparent 100%);
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .work-card:hover .work-info { transform: translateY(0); }
+
+    .work-tag {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-pale);
+      margin-bottom: 8px;
+    }
+    .work-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: #fff;
+    }
+
+    /* Wide card */
+    .work-card.wide {
+      grid-column: span 2;
+      aspect-ratio: 8/5;
+    }
+
+    /* Gallery */
+    .gallery {
+      position: relative;
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .main-image {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .main-image img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+    .thumbnails {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      overflow-x: auto;
+      justify-content: center;
+    }
+    .thumbnail {
+      width: 60px; height: 60px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
+      flex-shrink: 0;
+    }
+    .thumbnail:hover, .thumbnail.active {
+      border-color: var(--accent);
+    }
+    .gallery-btn {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(137, 137, 137, 0.85);
+      border: none;
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: none;
+      opacity: 0;
+      transition: opacity 0.3s, background 0.3s;
+      backdrop-filter: blur(6px);
+    }
+    .gallery-btn svg { pointer-events: none; }
+    .gallery-btn:hover { background: #fff; }
+    .gallery-btn.prev { left: 14px; }
+    .gallery-btn.next { right: 14px; }
+    .work-card:hover .gallery-btn { opacity: 1; }
+
+    /* Skills */
+    .skills { background: var(--cream); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+    .skill-item {
+      background: var(--warm-white);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.35s;
+    }
+    .skill-item::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px;
+      width: 0;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+    .skill-item:hover::before { width: 100%; }
+    .skill-item:hover { background: #fff; }
+
+    .skill-icon {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    .skill-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      margin-bottom: 12px;
+    }
+    .skill-desc {
+      font-size: 13px;
+      color: var(--ink-light);
+      line-height: 1.7;
+    }
+
+    /* Contact */
+    .contact {
+      background: var(--ink);
+      color: var(--warm-white);
+    }
+    .contact .section-label { color: var(--accent-pale); }
+    .contact .section-label::before { background: var(--accent-pale); }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .contact-text {
+      color: rgba(253,252,249,0.6);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-top: 24px;
+    }
+    .contact-form { margin-top: 0; }
+
+    .form-group { margin-bottom: 24px; position: relative; }
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(253,252,249,0.4);
+      margin-bottom: 10px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(253,252,249,0.2);
+      padding: 10px 0;
+      color: var(--warm-white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.3s;
+      resize: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(253,252,249,0.2); }
+    .form-group input:focus,
+    .form-group textarea:focus { border-bottom-color: var(--accent); }
+
+    .btn-send {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 16px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: none;
+      transition: background 0.3s, transform 0.2s;
+      margin-top: 8px;
+    }
+    .btn-send:hover { background: #A66D3A; transform: translateX(4px); }
+
+    /* Footer */
+    footer {
+      padding: 36px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--line);
+    }
+    footer p {
+      font-size: 12px;
+      color: var(--ink-light);
+      letter-spacing: 0.05em;
+    }
+    .social-links {
+      display: flex;
+      gap: 28px;
+    }
+    .social-links a {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .social-links a:hover { color: var(--accent); }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 24px 30px; }
+      nav ul { gap: 24px; }
+      .hero { grid-template-columns: 1fr; padding: 140px 30px 80px; gap: 40px; }
+      section { padding: 80px 30px; }
+      .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+      .work-grid { grid-template-columns: 1fr; }
+      .work-card.wide { grid-column: span 1; aspect-ratio: 4/5; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 16px; padding: 30px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="logo">PE-04<span> Promoçoes & Eventos</span></a>
+    <ul>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#trabalhos">Trabalhos</a></li>
+      <li><a href="#habilidades">Habilidades</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-line"></div>
+    <div class="hero-left">
+      <p class="hero-eyebrow">Designer Criativo</p>
+      <h1 class="hero-name">
+        PE-04<br/>
+        <em>Promoçoes &</em><br/>
+        Eventos
+      </h1>
+    </div>
+    <div class="hero-right">
+      <p class="hero-desc">
+        Da ideia à execução, a PE-04 cria experiências que comunicam com clareza, impressionam no detalhe e permanecem na memória.
+      </p>
+      <a href="#trabalhos" class="hero-cta">
+        Ver trabalhos
+        <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
+          <path d="M0 5H18M14 1L18 5L14 9" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </a>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="about" id="sobre">
+    <div class="about-grid">
+      <div>
+        <p class="section-label reveal">Sobre nos</p>
+        <h2 class="section-title reveal">Design é sobre<br/><em>intenção</em></h2>
+        <div class="about-text reveal">
+          <p>A PE-04 é especializada na criação e execução de experiências de marca por meio de projetos cenográficos, estandes e eventos. Trabalhamos para transformar ideias em soluções completas, que aliam impacto visual, funcionalidade e consistência estratégica.</p>
+          <p>Acreditamos que um bom projeto não apenas comunica, mas resolve desafios reais — desde a concepção até a entrega final. Com experiência em projetos para diferentes segmentos, desenvolvemos um olhar atento aos detalhes e uma abordagem orientada à eficiência, garantindo resultados que fortalecem a presença das marcas.</p>
+        </div>
+      </div>
+      <div>
+        <div class="about-stats reveal">
+          <div class="stat-card">
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Anos de experiência</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">80+</div>
+            <div class="stat-label">Projetos entregues</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">40+</div>
+            <div class="stat-label">Clientes satisfeitos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRABALHOS -->
+  <section id="trabalhos">
+    <p class="section-label reveal">Trabalhos selecionados</p>
+    <h2 class="section-title reveal">Projetos que nos<br/><em>orgulham</em></h2>
+    <div class="work-grid reveal">
+
+      <!-- Projeto 1 — wide -->
+      <div class="work-card wide">
+        <div class="gallery">
+          <div class="main-image"><img src="Petrobras-1.jpeg"></div>
+          <div class="thumbnails">
+            <img src="Petrobras-2.jpeg" class="thumbnail">
+            <img src="Petrobras-3.jpeg" class="thumbnail">
+            <img src="Petrobras-4.jpeg" class="thumbnail">
+            <img src="Petrobras-5.jpeg" class="thumbnail">
+          </div>
+          <button class="gallery-btn prev" aria-label="Anterior">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="#898989" stroke-width="1.5"/></svg>
+          </button>
+          <button class="gallery-btn next" aria-label="Próximo">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="#898989" stroke-width="1.5"/></svg>
+          </button>
+        </div>
+        <div class="work-info">
+          <p class="work-tag">Cenografia</p>
+          <h3 class="work-title">Petrobras (Recife, REC'N'PLAY 2025).</h3>
+        </div>
+      </div>
+    <line> 
+        
+      </line>
+      <!-- Projeto 2 -->
+      <div class="work-card wide">
+        <div class="gallery">
+          <div class="main-image"><img src="Natura-1.jpeg"></div>
+          <div class="thumbnails">
+            <img src="Natura-2.jpeg" class="thumbnail">
+            <img src="Natura-3.jpeg" class="thumbnail">
+            <img src="Natura-4.jpeg" class="thumbnail">
+            <img src="Natura-5.jpeg" class="thumbnail">
+          </div>
+          <button class="gallery-btn prev" aria-label="Anterior">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="#1A1714" stroke-width="1.5"/></svg>
+          </button>
+          <button class="gallery-btn next" aria-label="Próximo">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="#1A1714" stroke-width="1.5"/></svg>
+          </button>
+        </div>
+        <div class="work-info">
+          <p class="work-tag">Cenografia</p>
+          <h3 class="work-title">Natura, lançamento do perfume Essencial Sentir.</h3>
+        </div>
+      </div>
+      <line> 
+        
+      </line>
+<!-- Projeto 3 -->
+      <div class="work-card wide">
+        <div class="gallery">
+          <div class="main-image"><img src="Lilly-1.JPG"></div>
+          <div class="thumbnails">
+            <img src="Lilly-2.JPG" class="thumbnail">
+            <img src="Lilly-3.JPG" class="thumbnail">
+            <img src="Lilly-4.JPG" class="thumbnail">
+            <img src="Lilly-5.JPG" class="thumbnail">
+          </div>
+          <button class="gallery-btn prev" aria-label="Anterior">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="#1A1714" stroke-width="1.5"/></svg>
+          </button>
+          <button class="gallery-btn next" aria-label="Próximo">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="#1A1714" stroke-width="1.5"/></svg>
+          </button>
+        </div>
+        <div class="work-info">
+          <p class="work-tag">Cenografia</p>
+          <h3 class="work-title">Lilly (Recife, CBEM 2024).</h3>
+        </div>
+      </div>
+      <line> 
+
+      </line>
+<!-- Projeto 4 -->
+      <div class="work-card wide">
+        <div class="gallery">
+          <div class="main-image"><img src="Arraiá do Rift-1.jpg"></div>
+          <div class="thumbnails">
+            <img src="Arraiá do Rift-2.jpg" class="thumbnail">
+            <img src="Arraiá do Rift-3.jpg" class="thumbnail">
+            <img src="Arraiá do Rift-4.jpg" class="thumbnail">
+            <img src="Arraiá do Rift-5.jpg" class="thumbnail">
+          </div>
+          <button class="gallery-btn prev" aria-label="Anterior">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="#1A1714" stroke-width="1.5"/></svg>
+          </button>
+          <button class="gallery-btn next" aria-label="Próximo">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="#1A1714" stroke-width="1.5"/></svg>
+          </button>
+        </div>
+        <div class="work-info">
+          <p class="work-tag">Cenografia</p>
+          <h3 class="work-title">Arraiá do Rift, competição gamer.</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HABILIDADES -->
+  <section class="skills" id="habilidades">
+    <p class="section-label reveal">O que oferecemos</p>
+    <h2 class="section-title reveal">Nossas<br/><em>especialidades</em></h2>
+    <div class="skills-grid reveal">
+      <div class="skill-item">
+        <div class="skill-icon">✦</div>
+        <div class="skill-name">Estandes únicos</div>
+        <div class="skill-desc">conceito, layout, materiais e linguagem visual integrados em uma experiência coesa.</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">◈</div>
+        <div class="skill-name">Layout</div>
+        <div class="skill-desc">Layouts inteligentes que organizam o espaço, orientam o público e reforçam a presença da marca.</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">○</div>
+        <div class="skill-name">Retroiluminação</div>
+        <div class="skill-desc">Soluções em retroiluminação que transformam o estande em um ponto de destaque, reforçando a identidade da marca e atraindo o público.</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">△</div>
+        <div class="skill-name">Projetos executivos</div>
+        <div class="skill-desc">Desenvolvimento de projetos executivos com especificações de materiais, dimensionamento, detalhamento construtivo e orientações para uma execução segura e eficiente.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="contact" id="contato">
+    <div class="contact-inner">
+      <div>
+        <p class="section-label reveal">Contato</p>
+        <h2 class="section-title reveal">Vamos criar<br/><em>juntos?</em></h2>
+        <p class="contact-text reveal">
+          Tem um projeto em mente? Conte pra gente os detalhes e vamos desenvolver a melhor solução para o seu evento ou estande.
+        </p>
+      </div>
+      <div class="contact-form reveal">
+        <div class="form-group">
+          <label>Seu nome</label>
+          <input type="text" placeholder="Como posso te chamar?"/>
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" placeholder="seu@email.com"/>
+        </div>
+        <div class="form-group">
+          <label>Mensagem</label>
+          <textarea rows="4" placeholder="Me conta sobre o projeto..."></textarea>
+        </div>
+        <button class="btn-send">
+          Enviar mensagem
+          <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
+            <path d="M0 5H18M14 1L18 5L14 9" stroke="white" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 · Seu Nome · Todos os direitos reservados</p>
+    <div class="social-links">
+      <a href="https://www.instagram.com/pe04eventos/">Instagram</a>
+    </div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function animRing() {
+      rx = lerp(rx, mx, 0.12);
+      ry = lerp(ry, my, 0.12);
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    document.querySelectorAll('a, button, .work-card, .skill-item').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
+        ring.style.opacity = '0';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+        ring.style.opacity = '0.6';
+      });
+    // Galleries
+    document.querySelectorAll('.work-card').forEach(card => {
+      const mainImg = card.querySelector('.main-image img');
+      const thumbnails = card.querySelectorAll('.thumbnail');
+      const prevBtn = card.querySelector('.gallery-btn.prev');
+      const nextBtn = card.querySelector('.gallery-btn.next');
+      let current = 0;
+      
+      function updateMain(idx) {
+        current = idx % thumbnails.length;
+        if (current < 0) current = thumbnails.length + current;
+        const src = thumbnails[current].src;
+        mainImg.src = src;
+        thumbnails.forEach((t, i) => t.classList.toggle('active', i === current));
+      }
+      
+      thumbnails.forEach((thumb, idx) => {
+        thumb.addEventListener('click', () => updateMain(idx));
+      });
+      
+      prevBtn.addEventListener('click', e => { e.stopPropagation(); updateMain(current - 1); });
+      nextBtn.addEventListener('click', e => { e.stopPropagation(); updateMain(current + 1); });
+      
+      // Set first as active
+      if (thumbnails.length > 0) {
+        updateMain(0);
+      }
+    });
+
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => obs.observe(el));
+      }); 
+  </script>
+</body>
+</html>
